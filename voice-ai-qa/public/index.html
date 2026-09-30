@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Call QA · Alpha Drive AI</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <strong>Call QA</strong>
+      <span class="muted">Alpha Drive AI · Bland calls, on-demand audio review</span>
+    </div>
+    <div id="status" class="chips"></div>
+  </header>
+
+  <main class="layout">
+    <aside class="side">
+      <section class="card">
+        <h2>New random sample</h2>
+        <form id="sampleForm">
+          <label>Account
+            <select name="accountId" id="accountSel"></select>
+          </label>
+          <label>Pathway
+            <select name="pathwayId" id="pathwaySel"><option value="">All pathways</option></select>
+          </label>
+          <label class="small">…or paste a pathway ID
+            <input name="pathwayManual" placeholder="pathway UUID" />
+          </label>
+          <div class="field">
+            <span>Sample size</span>
+            <div class="seg" id="sizeSeg"></div>
+          </div>
+          <div class="row2">
+            <label>From <input type="date" name="startDate" /></label>
+            <label>To <input type="date" name="endDate" /></label>
+          </div>
+          <label>Skip calls shorter than (sec)
+            <input type="number" name="minSeconds" value="30" min="0" />
+          </label>
+          <label class="check"><input type="checkbox" name="audioTiming" checked /> Audio timing checks (dead air, talk-over). Free, but slower.</label>
+          <input name="label" placeholder="Label (optional)" />
+          <button type="submit" class="primary">Pull sample</button>
+          <p class="hint">Sampling and triage are free. Hume only runs when you pick calls and click <b>Deep review</b>.</p>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Batches</h2>
+        <div id="batches" class="list"></div>
+      </section>
+    </aside>
+
+    <section class="content" id="content">
+      <div class="empty">
+        <h2>Pick or pull a batch</h2>
+        <p class="muted">Every sampled call gets free checks: possible cut-offs, slow AI replies, dead air, repeated questions, frustration phrases and (if the recording is stereo) talk-over. Calls are ranked by risk so you can send only the worst ones to Hume + Claude.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="drawer" class="drawer hidden" aria-hidden="true">
+    <div class="drawer-inner">
+      <button class="close" id="drawerClose" aria-label="Close">×</button>
+      <div id="drawerBody"></div>
+    </div>
+  </div>
+
+  <dialog id="confirmDlg">
+    <form method="dialog" id="confirmForm">
+      <h3>Deep review</h3>
+      <div id="confirmBody"></div>
+      <label class="check"><input type="checkbox" id="useHume" checked /> Hume audio emotion (paid)</label>
+      <label class="check"><input type="checkbox" id="useClaude" checked /> Claude context review</label>
+      <div class="actions">
+        <button value="cancel">Cancel</button>
+        <button value="ok" class="primary" id="confirmOk">Run review</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
